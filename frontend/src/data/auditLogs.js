@@ -1,0 +1,51 @@
+export const auditLogs = [
+  {
+    id: 'a1',
+    at: '2026-05-10T09:14:00.000Z',
+    actorUserId: 'u1',
+    action: 'CREATE_APPOINTMENT',
+    target: { appointmentId: 'app1' },
+    meta: { transporterUserId: 'u2', containerId: 'c3' },
+  },
+  {
+    id: 'a2',
+    at: '2026-05-10T10:02:00.000Z',
+    actorUserId: 'u1',
+    action: 'APPROVE_APPOINTMENT',
+    target: { appointmentId: 'app1' },
+    meta: { scheduledFor: '2026-05-12T08:30:00.000Z' },
+  },
+  {
+    id: 'a3',
+    at: '2026-05-11T12:30:00.000Z',
+    actorUserId: 'u2',
+    action: 'UPDATE_STATUS',
+    target: { appointmentId: 'app1' },
+    meta: { status: 'approved' },
+  },
+  {
+    id: 'a4',
+    at: '2026-05-11T15:05:00.000Z',
+    actorUserId: 'u1',
+    action: 'REJECT_APPOINTMENT',
+    target: { appointmentId: 'app2' },
+    meta: { reason: 'Container not available' },
+  },
+  {
+    id: 'a5',
+    at: '2026-05-12T08:40:00.000Z',
+    actorUserId: 'u1',
+    action: 'CREATE_APPOINTMENT',
+    target: { appointmentId: 'app3' },
+    meta: { transporterUserId: 'u3', containerId: 'c7' },
+  },
+  {
+    id: 'a6',
+    at: '2026-05-12T09:00:00.000Z',
+    actorUserId: 'u3',
+    action: 'UPDATE_STATUS',
+    target: { appointmentId: 'app3' },
+    meta: { status: 'pending' },
+  },
+];
+

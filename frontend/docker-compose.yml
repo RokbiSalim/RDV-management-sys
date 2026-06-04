@@ -1,0 +1,44 @@
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: builder
+    container_name: rdv-frontend
+    ports:
+      - "3000:80"
+      - "5173:5173"
+    restart: unless-stopped
+    networks:
+      - rdv-network
+    environment:
+      - NODE_ENV=production
+      - VITE_API_URL=http://localhost:8080/api
+    volumes:
+      - ./src:/app/src
+      - ./public:/app/public
+    command: npm run dev -- --host 0.0.0.0
+
+  # Optional: Development mode with hot reload
+  frontend-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: rdv-frontend-dev
+    ports:
+      - "5173:5173"
+    restart: unless-stopped
+    networks:
+      - rdv-network
+    environment:
+      - NODE_ENV=development
+      - VITE_API_URL=http://localhost:8080/api
+    volumes:
+      - ./src:/app/src
+      - ./public:/app/public
+      - ./package.json:/app/package.json
+    command: npm run dev -- --host 0.0.0.0
+
+networks:
+  rdv-network:
+    driver: bridge
