@@ -7,7 +7,7 @@ const KEYS = {
 
 export function saveSession({ role, userId, username, backendRole }) {
   localStorage.setItem(KEYS.role, role);
-  localStorage.setItem(KEYS.userId, String(userId));
+  localStorage.setItem(KEYS.userId, userId == null ? '' : String(userId));
   localStorage.setItem(KEYS.username, username);
   localStorage.setItem(KEYS.backendRole, backendRole);
 }
@@ -21,7 +21,7 @@ export function getSession() {
   if (!role) return null;
   return {
     role,
-    userId: Number(localStorage.getItem(KEYS.userId)) || null,
+    userId: localStorage.getItem(KEYS.userId) || null,
     username: localStorage.getItem(KEYS.username) || '',
     backendRole: localStorage.getItem(KEYS.backendRole) || '',
   };

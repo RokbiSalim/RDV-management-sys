@@ -10,6 +10,7 @@ export default function Sidebar({ role, onNavigate }) {
         { label: 'Containers', to: '/admin/containers' },
         { label: 'Users', to: '/admin/users' },
         { label: 'Blockages', to: '/admin/blockages' },
+        { label: 'Notifications', to: '/admin/notifications' },
         { label: 'Audit Logs', to: '/admin/audit' },
       ];
     }

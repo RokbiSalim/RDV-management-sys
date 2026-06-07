@@ -13,6 +13,7 @@ import TransporterLayout from '../layouts/TransporterLayout';
 import { RequireRole } from './RequireRole';
 import HomeRedirect from './HomeRedirect';
 import AdminBlockagesPage from '../pages/admin/BlockagesPage';
+import WhatsAppNotificationsPage from '../pages/admin/WhatsAppNotificationsPage';
 
 export default function AppRouter() {
   return (
@@ -33,6 +34,7 @@ export default function AppRouter() {
         <Route path="users" element={<AdminUsersPage />} />
         <Route path="audit" element={<AdminAuditPage />} />
         <Route path="blockages" element={<AdminBlockagesPage />} />
+        <Route path="notifications" element={<WhatsAppNotificationsPage />} />
         <Route index element={<Navigate to="dashboard" replace />} />
       </Route>
 

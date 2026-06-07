@@ -1,5 +1,6 @@
 import { useRole } from '../context/roleContext.jsx';
 import { clearSession } from '../utils/session.js';
+import { logoutFromKeycloak } from '../services/keycloakservice.js';
 
 export default function Topbar({ title }) {
   const { role, username, setRole } = useRole();
@@ -18,7 +19,7 @@ export default function Topbar({ title }) {
           onClick={() => {
             clearSession();
             setRole(null);
-            window.location.href = '/login';
+            logoutFromKeycloak();
           }}
         >
           Déconnexion
