@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { blockageService } from '../../services/blockageservice.js';
 import { trancheService } from '../../services/trancheservice.js';
 
@@ -12,7 +12,7 @@ export default function AdminBlockagesPage() {
   const [error, setError] = useState(null);
   const [actionId, setActionId] = useState(null);
 
-  const load = () => {
+  const load = useCallback(() => {
     setLoading(true);
     return Promise.all([blockageService.getAll(), trancheService.getAll()])
       .then(([blockRes, trancheRes]) => {
@@ -24,11 +24,11 @@ export default function AdminBlockagesPage() {
       })
       .catch((err) => setError(err.message || 'Impossible de charger les blocages.'))
       .finally(() => setLoading(false));
-  };
+  }, [trancheId]);
 
   useEffect(() => {
     load();
-  }, []);
+  }, [load]);
 
   const handleBlock = async () => {
     try {

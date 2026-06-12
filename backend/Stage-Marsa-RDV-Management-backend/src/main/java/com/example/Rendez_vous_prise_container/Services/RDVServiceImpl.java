@@ -57,11 +57,12 @@ public class RDVServiceImpl implements RDVService {
         rdv.setTransporterName(dto.getTransporterName());
         rdv.setTruckPlate(dto.getTruckPlate());
         rdv.setDate(dto.getDate());
-        rdv.setStatut(StatutRDV.CREATED);
+        rdv.setStatut(StatutRDV.CONFIRMED);
         rdv.setTranche(tranche);
         rdv.setContainer(container);
         rdv.setClient(container.getClient());
         rdv.setCreatedBy(user);
+        RdvQrSupport.ensureQrCodeForApproved(rdv);
 
         return rdvRepository.save(rdv);
     }
@@ -71,10 +72,6 @@ public class RDVServiceImpl implements RDVService {
 
         RDV rdv = rdvRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("RDV not found"));
-
-        if (rdv.getStatut() == StatutRDV.CANCELLED) {
-            throw new RuntimeException("Cannot confirm a cancelled RDV");
-        }
 
         if (rdv.getStatut() == StatutRDV.CONFIRMED) {
             throw new RuntimeException("RDV already confirmed");

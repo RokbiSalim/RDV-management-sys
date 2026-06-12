@@ -10,3 +10,24 @@
   [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.91.1:[1m5173[22m/[39m
   [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.33.1:[1m5173[22m/[39m
   [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.11.183:[1m5173[22m/[39m
+[2m04:03:40[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/DashboardCharts.jsx[22m
+[2m04:14:19[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/pages/admin/AppointmentsPage.jsx[22m
+[2m04:14:20[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/pages/admin/BlockagesPage.jsx[22m
+[2m04:14:21[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/pages/transporter/CreateAppointmentPage.jsx[22m
+[2m04:17:45[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/pages/admin/AppointmentsPage.jsx[22m
+[2m19:39:44[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/pages/admin/DashboardPage.jsx, /src/pages/transporter/TransporterDashboardPage.jsx, /src/pages/admin/ContainersPage.jsx, /src/pages/admin/AppointmentsPage.jsx, /src/pages/transporter/CreateAppointmentPage.jsx[22m
+[2m19:39:44[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/pages/admin/DashboardPage.jsx, /src/pages/transporter/TransporterDashboardPage.jsx, /src/pages/admin/ContainersPage.jsx, /src/pages/admin/AppointmentsPage.jsx, /src/pages/transporter/CreateAppointmentPage.jsx[22m
+[2m19:40:40[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/pages/admin/ContainersPage.jsx[22m
+[2m19:40:41[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/pages/admin/ContainersPage.jsx[22m
+[2m19:41:24[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/styles/app.css[22m
+[2m20:10:02[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/context/roleContext.jsx, /src/pages/admin/UsersPage.jsx[22m
+[2m20:10:02[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/context/roleContext.jsx, /src/pages/admin/UsersPage.jsx[22m
+[2m20:11:11[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/pages/admin/UsersPage.jsx[22m
+[2m20:11:12[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/pages/admin/UsersPage.jsx[22m
+[2m20:11:38[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/styles/app.css[22m
+[2m20:28:33[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/pages/admin/AppointmentsPage.jsx, /src/pages/transporter/MyAppointmentsPage.jsx, /src/pages/transporter/CreateAppointmentPage.jsx[22m
+[2m20:28:33[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/pages/admin/AppointmentsPage.jsx, /src/pages/transporter/MyAppointmentsPage.jsx, /src/pages/transporter/CreateAppointmentPage.jsx[22m
+[2m20:29:27[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/pages/admin/AppointmentsPage.jsx[22m
+[2m20:31:01[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/pages/admin/AppointmentsPage.jsx[22m
+[2m20:31:02[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/pages/admin/AppointmentsPage.jsx[22m
+[2m20:31:19[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/styles/app.css[22m

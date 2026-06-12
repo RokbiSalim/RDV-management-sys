@@ -1,127 +1,206 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import UserFormModal from '../../components/users/UserFormModal.jsx';
+import UserTable from '../../components/users/UserTable.jsx';
+import { fallbackClients } from '../../data/containerCrudFallback.js';
+import { buildUserFromPayload, fallbackUsers, normalizeUser } from '../../data/userCrudFallback.js';
+import { clientService } from '../../services/clientservice.js';
 import { userService } from '../../services/userservice.js';
-import { roleToBackend, roleToUi } from '../../utils/backendMaps.js';
+import { roleToUi } from '../../utils/backendMaps.js';
+import { getSession } from '../../utils/session.js';
 
 export default function AdminUsersPage() {
   const [users, setUsers] = useState([]);
+  const [clients, setClients] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [newUsername, setNewUsername] = useState('');
-  const [newRole, setNewRole] = useState('TRANSPORTER');
   const [saving, setSaving] = useState(false);
+  const [busyId, setBusyId] = useState(null);
+  const [error, setError] = useState(null);
+  const [notice, setNotice] = useState(null);
+  const [modalState, setModalState] = useState({ open: false, mode: 'add', user: null });
 
-  const loadUsers = () => {
+  const session = useMemo(() => getSession(), []);
+
+  const visibleUsers = useMemo(
+    () => users.map((user) => normalizeUser(user, clients)),
+    [users, clients],
+  );
+
+  const stats = useMemo(() => {
+    const admins = visibleUsers.filter((user) => roleToUi(user.role) === 'ADMIN').length;
+    const transporters = visibleUsers.filter((user) => roleToUi(user.role) === 'TRANSPORTER').length;
+    return {
+      admins,
+      transporters,
+      total: visibleUsers.length,
+    };
+  }, [visibleUsers]);
+
+  const loadData = useCallback(() => {
     setLoading(true);
-    return userService
-      .getAll()
-      .then((res) => {
-        setUsers(res.data || []);
-        setError(null);
-      })
-      .catch((err) => setError(err.message || 'Unable to load users.'))
-      .finally(() => setLoading(false));
-  };
+    setError(null);
 
-  useEffect(() => {
-    loadUsers();
+    return Promise.allSettled([userService.getAll(), clientService.getAll()])
+      .then(([usersResult, clientsResult]) => {
+        const nextClients =
+          clientsResult.status === 'fulfilled'
+            ? clientsResult.value.data || []
+            : fallbackClients;
+
+        const nextUsers =
+          usersResult.status === 'fulfilled'
+            ? usersResult.value.data || []
+            : fallbackUsers;
+
+        setClients(nextClients);
+        setUsers(nextUsers.map((user) => normalizeUser(user, nextClients)));
+
+        if (usersResult.status === 'rejected' || clientsResult.status === 'rejected') {
+          setNotice('Mode local actif: certaines donnees viennent du fallback.');
+        }
+      })
+      .catch((err) => {
+        setError(err.message || 'Unable to load users.');
+        setClients(fallbackClients);
+        setUsers(fallbackUsers);
+      })
+      .finally(() => setLoading(false));
   }, []);
 
-  const handleCreateUser = async () => {
-    if (!newUsername.trim()) return;
+  useEffect(() => {
+    loadData();
+  }, [loadData]);
+
+  const openAddModal = () => {
+    setModalState({ open: true, mode: 'add', user: null });
+    setError(null);
+  };
+
+  const openEditModal = (user) => {
+    setModalState({ open: true, mode: 'edit', user });
+    setError(null);
+  };
+
+  const closeModal = () => {
+    if (saving) return;
+    setModalState({ open: false, mode: 'add', user: null });
+  };
+
+  const isConnectedUser = (user) =>
+    String(user.id) === String(session?.userId) ||
+    String(user.username || '').toLowerCase() === String(session?.username || '').toLowerCase();
+
+  const saveUser = async (payload) => {
     setSaving(true);
+    setError(null);
+    setNotice(null);
+
+    const currentUser = modalState.user;
+    const localUser = buildUserFromPayload(payload, clients, currentUser);
+
     try {
-      await userService.create({
-        username: newUsername.trim(),
-        role: roleToBackend(newRole),
-      });
-      setNewUsername('');
-      await loadUsers();
-    } catch (err) {
-      setError(err.message || 'Unable to create user.');
+      if (modalState.mode === 'edit' && currentUser) {
+        const response = await userService.update(currentUser.id, payload);
+        const updated = normalizeUser(response.data || localUser, clients);
+        setUsers((items) => items.map((item) => (item.id === currentUser.id ? updated : item)));
+        setNotice('Utilisateur modifie avec succes.');
+      } else {
+        const response = await userService.create(payload);
+        const created = normalizeUser(response.data || localUser, clients);
+        setUsers((items) => [created, ...items]);
+        setNotice('Utilisateur cree avec succes.');
+      }
+    } catch {
+      if (modalState.mode === 'edit' && currentUser) {
+        setUsers((items) => items.map((item) => (item.id === currentUser.id ? localUser : item)));
+        setNotice('Modification appliquee localement. API update indisponible.');
+      } else {
+        setUsers((items) => [localUser, ...items]);
+        setNotice('Creation appliquee localement. API create indisponible.');
+      }
     } finally {
       setSaving(false);
+      setModalState({ open: false, mode: 'add', user: null });
     }
   };
 
-  const adminCount = users.filter((u) => roleToUi(u.role) === 'ADMIN').length;
-  const transporterCount = users.filter((u) => roleToUi(u.role) === 'TRANSPORTER').length;
+  const deleteUser = async (user) => {
+    if (isConnectedUser(user)) {
+      setError('Impossible de supprimer le compte admin connecte.');
+      return;
+    }
+
+    const confirmed = window.confirm(`Supprimer l'utilisateur ${user.username} ?`);
+    if (!confirmed) return;
+
+    setBusyId(user.id);
+    setError(null);
+    setNotice(null);
+
+    try {
+      await userService.delete(user.id);
+      setNotice('Utilisateur supprime avec succes.');
+    } catch {
+      setNotice('Suppression appliquee localement. API delete indisponible.');
+    } finally {
+      setUsers((items) => items.filter((item) => item.id !== user.id));
+      setBusyId(null);
+    }
+  };
 
   if (loading) {
     return <p>Loading users...</p>;
   }
 
   return (
-  <>
-      <h1 className="pageTitle">Users</h1>
-      {error ? <p className="callout callout--danger">{error}</p> : null}
-
-      <section className="card" style={{ marginBottom: 16 }}>
-        <h2 className="card__title">Nouvel utilisateur</h2>
-        <input
-          className="input"
-          value={newUsername}
-          onChange={(e) => setNewUsername(e.target.value)}
-          placeholder="Nom d'utilisateur"
-        />
-        <select className="input" style={{ marginTop: 8 }} value={newRole} onChange={(e) => setNewRole(e.target.value)}>
-          <option value="ADMIN">Admin</option>
-          <option value="TRANSPORTER">Transporteur</option>
-        </select>
-        <button
-          type="button"
-          className="btn btn--primary"
-          style={{ marginTop: 12 }}
-          onClick={handleCreateUser}
-          disabled={saving || !newUsername.trim()}
-        >
-          {saving ? 'Création…' : 'Créer'}
+    <div className="usersPage">
+      <div className="pageHeader">
+        <div>
+          <p className="pageEyebrow">Marsa Maroc</p>
+          <h1 className="pageTitle">Users</h1>
+        </div>
+        <button type="button" className="btn btn--primary" onClick={openAddModal}>
+          Créer
         </button>
-      </section>
+      </div>
+
+      {error ? <p className="callout callout--danger">{error}</p> : null}
+      {notice ? <p className="callout callout--success">{notice}</p> : null}
 
       <section className="grid grid--3">
         <article className="card statCard">
           <p className="statCard__title">Admins</p>
-          <p className="statCard__value">{adminCount}</p>
+          <p className="statCard__value">{stats.admins}</p>
         </article>
         <article className="card statCard">
           <p className="statCard__title">Transporters</p>
-          <p className="statCard__value">{transporterCount}</p>
+          <p className="statCard__value">{stats.transporters}</p>
         </article>
         <article className="card statCard">
           <p className="statCard__title">Total</p>
-          <p className="statCard__value">{users.length}</p>
+          <p className="statCard__value">{stats.total}</p>
         </article>
       </section>
 
-      <section className="card" style={{ marginTop: 16 }}>
-        <section className="tableWrap">
-          <table className="table">
-            <thead>
-              <tr>
-                <th>User</th>
-                <th>Role</th>
-                <th>Client</th>
-              </tr>
-            </thead>
-            <tbody>
-              {users.map((u) => (
-                <tr key={u.id}>
-                  <td>
-                    <strong className="strong">{u.username}</strong>
-                    <p className="muted">{u.id}</p>
-                  </td>
-                  <td>
-                    <span className={roleToUi(u.role) === 'ADMIN' ? 'pill pill--info' : 'pill pill--neutral'}>
-                      {roleToUi(u.role)}
-                    </span>
-                  </td>
-                  <td>{u.clientName || '-'}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </section>
+      <section className="card usersCard">
+        <UserTable
+          users={visibleUsers}
+          currentSession={session}
+          busyId={busyId}
+          onEdit={openEditModal}
+          onDelete={deleteUser}
+        />
       </section>
-  </>
+
+      {modalState.open ? (
+        <UserFormModal
+          mode={modalState.mode}
+          user={modalState.user}
+          clients={clients}
+          saving={saving}
+          onClose={closeModal}
+          onSubmit={saveUser}
+        />
+      ) : null}
+    </div>
   );
 }

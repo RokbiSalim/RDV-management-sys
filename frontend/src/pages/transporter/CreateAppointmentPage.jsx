@@ -25,7 +25,7 @@ export default function CreateAppointmentPage() {
 
   useEffect(() => {
     if (username && !transporterName) setTransporterName(username);
-  }, [username]);
+  }, [username, transporterName]);
 
   useEffect(() => {
     if (!date) return;

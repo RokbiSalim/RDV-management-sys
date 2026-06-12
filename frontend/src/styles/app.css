@@ -589,3 +589,241 @@
   cursor: pointer;
 }
 
+.appointmentActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* Containers CRUD */
+.containersPage {
+  color: #111111;
+}
+
+.pageHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+
+.pageEyebrow,
+.modalEyebrow {
+  margin: 0 0 4px;
+  color: var(--secondary);
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.containersCard {
+  padding: 0;
+  overflow: hidden;
+  border-color: rgba(37, 99, 235, 0.16);
+}
+
+.containersTableWrap {
+  border-radius: var(--radius);
+}
+
+.containersTable {
+  min-width: 760px;
+  background: #ffffff;
+}
+
+.containersTable th {
+  background: rgba(37, 99, 235, 0.08);
+  color: #111111;
+  font-weight: 900;
+}
+
+.containersTable td {
+  color: #111111;
+}
+
+.containerReference {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  padding: 5px 10px;
+  border: 1px solid rgba(37, 99, 235, 0.22);
+  border-radius: 8px;
+  background: rgba(37, 99, 235, 0.06);
+  color: #111111;
+  font-weight: 900;
+}
+
+.containerActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.btn--compact {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 38px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  white-space: nowrap;
+}
+
+.btn--danger {
+  border-color: rgba(220, 38, 38, 0.35);
+  background: #ffffff;
+  color: #111111;
+}
+
+.btn--danger:hover {
+  border-color: rgba(220, 38, 38, 0.7);
+  background: rgba(220, 38, 38, 0.07);
+}
+
+.modalBackdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(17, 24, 39, 0.55);
+}
+
+.containerModal {
+  width: min(520px, 100%);
+  background: #ffffff;
+  color: #111111;
+  border-radius: 12px;
+}
+
+.modalHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.modalTitle {
+  margin: 0;
+  color: #111111;
+  font-size: 22px;
+}
+
+.modalClose {
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #ffffff;
+  color: #111111;
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.containerForm {
+  display: grid;
+  gap: 14px;
+}
+
+.fieldError {
+  color: #b91c1c;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.modalActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+@media (max-width: 720px) {
+  .pageHeader {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .pageHeader .btn {
+    width: 100%;
+  }
+
+  .containerActions {
+    flex-direction: column;
+  }
+
+  .btn--compact {
+    width: 100%;
+  }
+
+  .modalActions {
+    flex-direction: column-reverse;
+  }
+
+  .modalActions .btn {
+    width: 100%;
+  }
+}
+
+/* Users CRUD */
+.usersPage {
+  color: #111111;
+}
+
+.usersCard {
+  margin-top: 16px;
+  padding: 0;
+  overflow: hidden;
+  border-color: rgba(37, 99, 235, 0.16);
+}
+
+.usersTableWrap {
+  border-radius: var(--radius);
+}
+
+.usersTable {
+  min-width: 780px;
+  background: #ffffff;
+}
+
+.usersTable th {
+  background: rgba(37, 99, 235, 0.08);
+  color: #111111;
+  font-weight: 900;
+}
+
+.usersTable td {
+  color: #111111;
+}
+
+.userActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.userModal {
+  width: min(540px, 100%);
+  background: #ffffff;
+  color: #111111;
+  border-radius: 12px;
+}
+
+.userForm {
+  display: grid;
+  gap: 14px;
+}
+
+@media (max-width: 720px) {
+  .userActions {
+    flex-direction: column;
+  }
+}
+

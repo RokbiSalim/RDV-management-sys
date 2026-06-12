@@ -14,9 +14,9 @@ export function formatDate(iso) {
 
 export function statusLabel(status) {
   const s = normalizeStatut(status);
-  if (s === 'pending' || s === 'created') return { text: 'En attente', className: 'pill pill--warning' };
-  if (s === 'approved' || s === 'confirmed') return { text: 'Approuvé', className: 'pill pill--success' };
-  if (s === 'rejected' || s === 'cancelled') return { text: 'Refusé', className: 'pill pill--danger' };
+  if (s === 'pending' || s === 'created') return { text: 'Approuve', className: 'pill pill--success' };
+  if (s === 'approved' || s === 'confirmed') return { text: 'Approuve', className: 'pill pill--success' };
+  if (s === 'rejected' || s === 'cancelled') return { text: 'Refuse', className: 'pill pill--danger' };
   return { text: status, className: 'pill' };
 }
 
@@ -27,4 +27,3 @@ export function containerAvailabilityLabel(availability) {
   if (a === 'unavailable') return { text: 'Unavailable', className: 'pill pill--danger' };
   return { text: availability, className: 'pill' };
 }
-
