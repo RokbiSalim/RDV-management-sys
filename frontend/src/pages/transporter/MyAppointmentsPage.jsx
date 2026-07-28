@@ -10,7 +10,7 @@ import { filterMyAppointments } from '../../utils/rdvFilters.js';
 import { isApprovedRdv } from '../../utils/rdvQr.js';
 
 export default function MyAppointmentsPage() {
-  const { userId } = useRole();
+  const { userId, username } = useRole();
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -23,7 +23,7 @@ export default function MyAppointmentsPage() {
       .getAll()
       .then((res) => {
         if (!active) return;
-        setAppointments(filterMyAppointments(res.data || [], userId));
+        setAppointments(filterMyAppointments(res.data || [], userId, username));
       })
       .catch((err) => {
         if (!active) return;
@@ -37,7 +37,7 @@ export default function MyAppointmentsPage() {
     return () => {
       active = false;
     };
-  }, [userId]);
+  }, [userId, username]);
 
   if (loading) {
     return <div>Loading appointments...</div>;

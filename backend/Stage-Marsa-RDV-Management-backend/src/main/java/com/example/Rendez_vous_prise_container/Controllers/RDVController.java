@@ -1,5 +1,7 @@
 package com.example.Rendez_vous_prise_container.Controllers;
 
+import com.example.Rendez_vous_prise_container.DTOs.GateCheckRequest;
+import com.example.Rendez_vous_prise_container.DTOs.GateCheckResponse;
 import com.example.Rendez_vous_prise_container.DTOs.RDVRequestDTO;
 import com.example.Rendez_vous_prise_container.DTOs.RDVResponseDTO;
 import com.example.Rendez_vous_prise_container.Mappers.RDVMapper;
@@ -42,6 +44,16 @@ public class RDVController {
     //@PreAuthorize("hasRole('ADMIN_PORT')")
     public RDVResponseDTO cancel(@PathVariable Long id) {
         return rdvMapper.toDTO(rdvService.cancelRDV(id));
+    }
+
+    @PostMapping("/qr/check")
+    public GateCheckResponse checkQrCode(@Valid @RequestBody GateCheckRequest request) {
+        return rdvService.verifyQrCode(request);
+    }
+
+    @PostMapping("/qr/scan")
+    public GateCheckResponse scanQrCode(@Valid @RequestBody GateCheckRequest request) {
+        return rdvService.verifyQrCode(request);
     }
 
     @DeleteMapping("/{id}")

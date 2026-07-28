@@ -20,5 +20,7 @@ public class RDVResponseDTO {
     private String containerReference;
     private String clientName;
     private Long createdById;
+    private String createdByUsername;
     private String qrCode;
+    private boolean qrSent;
 }

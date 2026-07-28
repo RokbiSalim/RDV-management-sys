@@ -7,8 +7,23 @@ import { getCurrentUserId } from '../../utils/session.js';
 import { statusLabel } from '../../utils/format.js';
 import { Table, Th, Td } from '../../components/TableParts.jsx';
 
+function formatDateInput(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
+function dateAfterDays(days) {
+  const date = new Date();
+  date.setDate(date.getDate() + days);
+  return formatDateInput(date);
+}
+
 export default function CreateAppointmentPage() {
   const { username } = useRole();
+  const minAppointmentDate = useMemo(() => dateAfterDays(1), []);
+  const maxAppointmentDate = useMemo(() => dateAfterDays(30), []);
   const [containers, setContainers] = useState([]);
   const [tranches, setTranches] = useState([]);
   const [trancheAvailability, setTrancheAvailability] = useState([]);
@@ -17,7 +32,7 @@ export default function CreateAppointmentPage() {
   const [cin, setCin] = useState('');
   const [transporterName, setTransporterName] = useState('');
   const [truckPlate, setTruckPlate] = useState('');
-  const [date, setDate] = useState(() => new Date().toISOString().slice(0, 10));
+  const [date, setDate] = useState(() => dateAfterDays(1));
   const [notes, setNotes] = useState('');
   const [submitted, setSubmitted] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -94,8 +109,14 @@ export default function CreateAppointmentPage() {
   const selectedTranche = useMemo(() => tranches.find((t) => t.id === trancheId), [tranches, trancheId]);
   const selectedAvailability = availabilityMap[Number(trancheId)];
   const slotUnavailable = selectedAvailability?.blocked || selectedAvailability?.remaining === 0;
+  const dateOutsideAllowedWindow = date < minAppointmentDate || date > maxAppointmentDate;
 
   const createAppointment = async () => {
+    if (dateOutsideAllowedWindow) {
+      setError('The appointment date must be between tomorrow and 30 days from today.');
+      return;
+    }
+
     if (slotUnavailable) {
       const message = selectedAvailability?.blocked
         ? 'Cette tranche est bloquée pour la date sélectionnée.'
@@ -196,7 +217,14 @@ export default function CreateAppointmentPage() {
           </div>
           <div className="field" style={{ flex: 1 }}>
             <label className="label">Date</label>
-            <input className="input" type="date" value={date} onChange={(e) => setDate(e.target.value)} />
+            <input
+              className="input"
+              type="date"
+              value={date}
+              min={minAppointmentDate}
+              max={maxAppointmentDate}
+              onChange={(e) => setDate(e.target.value)}
+            />
           </div>
         </div>
 

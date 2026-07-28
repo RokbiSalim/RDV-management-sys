@@ -7,8 +7,10 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 @Repository
 public interface RDVRepository extends JpaRepository<RDV,Long> {
     long countByDateAndTrancheId(LocalDate date, Long trancheId);
     List<RDV> findByCreatedById(Long userId);
+    Optional<RDV> findByQrCode(String qrCode);
 }

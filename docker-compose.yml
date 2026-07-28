@@ -38,13 +38,32 @@ services:
       JDBC_DATABASE_PASSWORD: ${POSTGRES_PASSWORD}
       KEYCLOAK_ISSUER_URI: http://localhost:${KEYCLOAK_PORT}/realms/${KEYCLOAK_REALM}
       KEYCLOAK_JWK_SET_URI: http://keycloak:8080/realms/${KEYCLOAK_REALM}/protocol/openid-connect/certs
+      WHATSAPP_TOKEN: ${WHATSAPP_TOKEN}
+      WHATSAPP_PHONE_NUMBER_ID: ${WHATSAPP_PHONE_NUMBER_ID}
+      EGATE_TOS_URL: http://e-gate-tos:8082
+      APP_SECURITY_ENABLED: ${APP_SECURITY_ENABLED:-true}
     ports:
-      - "${BACKEND_PORT}:8081"
+      - "${BACKEND_PORT}:8080"
     depends_on:
       postgres:
         condition: service_healthy
       keycloak:
         condition: service_started
+      e-gate-tos:
+        condition: service_started
+
+  e-gate-tos:
+    build:
+      context: ./e-gate-tos
+    environment:
+      JDBC_DATABASE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB}
+      JDBC_DATABASE_USERNAME: ${POSTGRES_USER}
+      JDBC_DATABASE_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "${EGATE_TOS_PORT}:8082"
+    depends_on:
+      postgres:
+        condition: service_healthy
 
   frontend:
     build:
@@ -60,5 +79,19 @@ services:
       - backend
       - keycloak
 
+  sonarqube:
+    image: sonarqube:lts-community
+    ports:
+      - "${SONARQUBE_PORT:-9000}:9000"
+    environment:
+      SONAR_ES_BOOTSTRAP_CHECKS_DISABLE: "true"
+    volumes:
+      - sonarqube-data:/opt/sonarqube/data
+      - sonarqube-extensions:/opt/sonarqube/extensions
+      - sonarqube-logs:/opt/sonarqube/logs
+
 volumes:
   postgres-data:
+  sonarqube-data:
+  sonarqube-extensions:
+  sonarqube-logs:

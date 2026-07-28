@@ -4,7 +4,7 @@ FROM node:24-alpine AS builder
 WORKDIR /app
 
 ARG VITE_API_URL=/api
-ARG VITE_KEYCLOAK_URL=http://localhost:8082
+ARG VITE_KEYCLOAK_URL=http://localhost:8180
 ARG VITE_KEYCLOAK_REALM=rdv-realm
 ARG VITE_KEYCLOAK_CLIENT_ID=rdv-backend
 

@@ -22,7 +22,9 @@ public class RDVMapper {
                 .containerReference(rdv.getContainer().getReference())
                 .clientName(rdv.getClient().getName())
                 .createdById(rdv.getCreatedBy() != null ? rdv.getCreatedBy().getId() : null)
+                .createdByUsername(rdv.getCreatedBy() != null ? rdv.getCreatedBy().getUsername() : null)
                 .qrCode(rdv.getQrCode())
+                .qrSent(Boolean.TRUE.equals(rdv.getQrSent()))
                 .build();
     }
 }

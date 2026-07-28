@@ -40,5 +40,7 @@ public class RDV {
     /** Token unique affiché dans le QR code après approbation. */
     @Column(unique = true)
     private String qrCode;
+
+    private Boolean qrSent = false;
 }
 

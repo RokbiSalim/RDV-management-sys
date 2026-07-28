@@ -1,5 +1,7 @@
 package com.example.Rendez_vous_prise_container.Services;
 
+import com.example.Rendez_vous_prise_container.DTOs.GateCheckRequest;
+import com.example.Rendez_vous_prise_container.DTOs.GateCheckResponse;
 import com.example.Rendez_vous_prise_container.DTOs.RDVRequestDTO;
 import com.example.Rendez_vous_prise_container.Entities.RDV;
 
@@ -15,6 +17,8 @@ public interface RDVService {
     RDV confirmRDV(Long id);
 
     RDV cancelRDV(Long id);
+
+    GateCheckResponse verifyQrCode(GateCheckRequest request);
 
     List<RDV> getAllRDVs();
 }

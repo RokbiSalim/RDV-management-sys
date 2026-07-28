@@ -21,5 +21,5 @@ http://127.0.0.1:5173
 ## Notes
 
 - Le frontend communique avec le backend Spring Boot via la proxy /api/*.
-- Assure-toi que le backend est démarré sur http://localhost:8081 avant d’utiliser l’application.
+- Assure-toi que le backend est démarré sur http://localhost:8080 avant d’utiliser l’application.
 - Pour le guide complet de livraison et les commandes backend, consulte le fichier racine DELIVERY.md.

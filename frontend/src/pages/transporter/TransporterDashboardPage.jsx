@@ -16,7 +16,7 @@ function StatCard({ title, value }) {
 }
 
 export default function TransporterDashboardPage() {
-  const { userId } = useRole();
+  const { userId, username } = useRole();
   const [appointments, setAppointments] = useState([]);
   const [containers, setContainers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -28,7 +28,7 @@ export default function TransporterDashboardPage() {
     Promise.all([rdvService.getAll(), containerService.getAll()])
       .then(([appointmentsRes, containersRes]) => {
         if (!active) return;
-        setAppointments(filterMyAppointments(appointmentsRes.data || [], userId));
+        setAppointments(filterMyAppointments(appointmentsRes.data || [], userId, username));
         setContainers(containersRes.data || []);
       })
       .catch((err) => {
@@ -43,7 +43,7 @@ export default function TransporterDashboardPage() {
     return () => {
       active = false;
     };
-  }, [userId]);
+  }, [userId, username]);
 
   const stats = useMemo(() => {
     const pending = appointments.filter((a) => normalizeStatut(a.statut) === 'pending').length;

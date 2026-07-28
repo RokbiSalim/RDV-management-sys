@@ -31,7 +31,7 @@ http://127.0.0.1:5173
 
 ## Pré-requis
 
-- Le backend doit être démarré sur `http://localhost:8081`.
+- Le backend doit être démarré sur `http://localhost:8080`.
 - Le frontend utilise la proxy `/api/*` pour communiquer avec le backend.
 
 ## Remarques
